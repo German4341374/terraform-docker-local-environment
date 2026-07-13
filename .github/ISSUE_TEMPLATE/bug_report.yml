@@ -1,0 +1,24 @@
+name: Bug report
+description: Report reproducible Terraform behavior without state or secrets.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and sanitized output
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: I did not attach state, plan binaries, passwords, tokens, or personal data.
+          required: true

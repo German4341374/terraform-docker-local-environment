@@ -1,0 +1,11 @@
+name: Feature request
+description: Propose a focused local-infrastructure improvement.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Problem, proposal, lifecycle, and security impact
+    validations:
+      required: true

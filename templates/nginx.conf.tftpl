@@ -1,0 +1,25 @@
+upstream applications {
+%{ for app in app_names ~}
+    server ${app}:8080;
+%{ endfor ~}
+}
+
+server {
+    listen 8080;
+    server_name _;
+    server_tokens off;
+
+    location = /health {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 "healthy\n";
+    }
+
+    location / {
+        proxy_pass http://applications;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

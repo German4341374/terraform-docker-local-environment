@@ -1,0 +1,79 @@
+name: Terraform CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: terraform-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  TF_VAR_postgres_password: ci-only-password-not-a-secret
+
+jobs:
+  validate:
+    name: Format, validate, lint, test, and scan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.8
+          terraform_wrapper: false
+      - uses: terraform-linters/setup-tflint@v6.3.0
+        with:
+          tflint_version: v0.63.1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Checkov
+        run: python -m pip install --disable-pip-version-check checkov==3.3.8
+      - name: Initialize providers without a backend
+        run: terraform init -backend=false
+      - name: Check formatting
+        run: terraform fmt -check -recursive -diff
+      - name: Validate configuration
+        run: terraform validate
+      - name: Run mocked Terraform tests
+        run: terraform test
+      - name: Run TFLint
+        run: |
+          tflint --init
+          tflint --recursive
+      - name: Run Checkov
+        run: checkov --directory . --framework terraform --quiet --compact
+
+  plan:
+    name: Produce non-applying development plan
+    needs: validate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.8
+          terraform_wrapper: false
+      - name: Initialize providers without a backend
+        run: terraform init -backend=false
+      - name: Create plan only
+        run: >-
+          terraform plan -input=false -refresh=false
+          -var-file=environments/development.tfvars
+          -out=development.tfplan
+      - name: Render human-readable plan
+        run: terraform show -no-color development.tfplan > development-plan.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-${{ github.run_id }}
+          path: development-plan.txt
+          retention-days: 7
