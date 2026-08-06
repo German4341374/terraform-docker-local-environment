@@ -48,7 +48,7 @@ They verify expressions, validations, replica behavior, and outputs without a Do
 ## 16. What does TFLint catch?
 Terraform-specific errors, deprecated patterns, naming problems, and suspicious declarations.
 
-## 17. What does Checkov add?
+## 17. What does Trivy Config add?
 It applies security policies to infrastructure configuration before resources exist.
 
 ## 18. Manual Docker or Terraform?

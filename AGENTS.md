@@ -5,5 +5,5 @@
 - Keep PostgreSQL unexposed and proxy binding limited to loopback.
 - Use variables with validation and mark secret-derived outputs sensitive.
 - Never add automatic apply to pull request workflows.
-- Run fmt, validate, Terraform tests, TFLint, and Checkov after changes.
+- Run fmt, validate, Terraform tests, TFLint, and Trivy Config after changes.
 - Update state and destroy runbooks when resource lifecycle changes.

@@ -23,7 +23,7 @@ Run `terraform output`, `docker ps --filter label=managed-by=terraform`, and
 ## 3:00–4:00 — state and CI safety
 
 Explain that state contains resource IDs and secrets and is gitignored. Show CI read-only permissions,
-mocked tests, TFLint, Checkov, plan artifact, and the deliberate absence of apply.
+mocked tests, TFLint, Trivy Config, plan artifact, and the deliberate absence of apply.
 
 ## 4:00–5:00 — lifecycle trade-offs
 

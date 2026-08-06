@@ -32,7 +32,7 @@ Only Nginx publishes a loopback port. PostgreSQL and application containers rema
 - Terraform 1.15.8 in CI
 - `kreuzwerker/docker` provider 4.5.0
 - Nginx Unprivileged 1.30.3, Traefik Whoami 1.11.0, PostgreSQL 17.4
-- Terraform native tests, TFLint 0.63.1, Checkov 3.3.8, GitHub Actions
+- Terraform native tests, TFLint 0.63.1, Trivy Config 0.72.0, GitHub Actions
 
 ## Repository layout
 
@@ -46,7 +46,7 @@ Only Nginx publishes a loopback port. PostgreSQL and application containers rema
 ## Prerequisites
 
 Use Linux or Windows with WSL2. Install Docker Engine or Docker Desktop WSL2 integration,
-Terraform 1.8+, TFLint, Checkov, GNU Make, Bash, and curl. No cloud credentials are needed.
+Terraform 1.8+, TFLint, Trivy, GNU Make, Bash, and curl. No cloud credentials are needed.
 
 ## Installation and usage
 
@@ -95,7 +95,7 @@ terraform fmt -check -recursive -diff
 terraform validate
 terraform test
 tflint --recursive
-checkov --directory . --framework terraform
+trivy config --severity HIGH,CRITICAL --exit-code 1 .
 terraform plan -refresh=false -var-file=environments/development.tfvars
 curl --fail http://127.0.0.1:8080/health
 docker ps --filter label=managed-by=terraform
@@ -128,7 +128,7 @@ Terraform adds state and lifecycle complexity; it is valuable when reproducibili
 ## GitHub Actions safety
 
 CI has only `contents: read`. It initializes without a remote backend, runs fmt, validate, mocked
-tests, TFLint, and Checkov, then creates a non-applying development plan with `-refresh=false`.
+tests, TFLint, and Trivy Config, then creates a non-applying development plan with `-refresh=false`.
 Only human-readable plan text is uploaded for seven days. Binary plans and state are never uploaded.
 There is no `terraform apply` command in the workflow, so untrusted pull requests cannot mutate Docker.
 
