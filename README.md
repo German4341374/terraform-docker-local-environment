@@ -2,9 +2,9 @@
 
 [![Terraform CI](https://github.com/German4341374/terraform-docker-local-environment/actions/workflows/terraform.yml/badge.svg)](https://github.com/German4341374/terraform-docker-local-environment/actions/workflows/terraform.yml)
 
-A local-only infrastructure-as-code portfolio project. Terraform and the Docker provider create an
-Nginx reverse proxy, configurable application replicas, PostgreSQL, a custom network, and persistent
-volumes without a cloud account.
+This repository uses Terraform and the Docker provider to create a complete local application stack:
+an Nginx reverse proxy, configurable application replicas, PostgreSQL, a custom network, and persistent
+volumes. It is small enough to inspect the plan and state lifecycle end to end.
 
 ## Architecture
 
@@ -157,14 +157,14 @@ There is no `terraform apply` command in the workflow, so untrusted pull request
 - Image tags are pinned but not digest-pinned.
 - CI produces a plan but intentionally does not apply or perform live endpoint health verification.
 
-## Future improvements
+## Next exercises
 
 - Pin image digests and add container vulnerability scanning.
 - Add encrypted remote-state examples without requiring them for local mode.
 - Add import and state-recovery exercises and scheduled restore testing.
 - Add policy-as-code rules for loopback binding and prohibited privileged containers.
 
-## Interview talking points
+## Design questions
 
 - Why state is both Terraform's advantage and its primary security responsibility.
 - How `for_each`, locals, validation, and saved plans improve repeatability.
@@ -172,7 +172,7 @@ There is no `terraform apply` command in the workflow, so untrusted pull request
 - Why sensitive outputs do not encrypt state.
 - Trade-offs between Docker commands, Compose, Terraform, and an orchestrator.
 
-See `DEMO.md`, `INTERVIEW.md`, and the `docs/` directory.
+See `DEMO.md`, `docs/design-notes.md`, and the `docs/` directory.
 
 ## License
 
