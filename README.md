@@ -2,9 +2,11 @@
 
 [![Terraform CI](https://github.com/German4341374/terraform-docker-local-environment/actions/workflows/terraform.yml/badge.svg)](https://github.com/German4341374/terraform-docker-local-environment/actions/workflows/terraform.yml)
 
-This repository uses Terraform and the Docker provider to create a complete local application stack:
-an Nginx reverse proxy, configurable application replicas, PostgreSQL, a custom network, and persistent
-volumes. It is small enough to inspect the plan and state lifecycle end to end.
+Use Terraform to start an Nginx proxy, application containers, and PostgreSQL on your computer.
+You can change the number of app containers, inspect the plan, and see how Terraform tracks
+networks and volumes in its state.
+
+Everything uses the local Docker provider. No cloud account is needed.
 
 ## Architecture
 
